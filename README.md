@@ -9,7 +9,24 @@
  - Create SignUp user account
  - Create Redux store with userSlice 
  - Implemented Sign Out
- - 
+ - Unsubscibed to the onAuthStateChanged callback
+ - Add hardcore data to constant.js file
+ - Register TMDB API & create and app & get access token 
+ - Get Data form TMDB 
+ - Custom Hook for NowPlayingMovies
+ - Update Store with movies data
+ - Fetch Data for Trailer video 
+ - Update Store with Trailer video Data
+ - Embedded the Youtube video and make it autoplay and mute
+ - Tailwind classes to make Main Container look good
+
+
+
+
+ # Bug-fix
+  - Sign up user displayName and profile picture update
+  - If the user is not logged in Redirect  /browse to Login page and vice-versa
+  - 
 
 
 # Redux 
@@ -32,5 +49,14 @@
 - NetflixGPT
     - Search Bar
     - Movie Suggestions
+
+
+    
+MainContainer
+ - VideoBackground
+ - Videotitle
+ SecondaryContainer
+ - MovieList * n
+   - Cards * n
     
  
