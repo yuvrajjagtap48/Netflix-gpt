@@ -9,28 +9,19 @@ import {
 import { auth } from "../utils/firebase";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
-import { USER_AVATAR, BG_URL } from "../utils/constants";
-
-
+import { BG_URL, USER_AVATAR } from "../utils/constants";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const dispatch = useDispatch();
 
+  const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
-  const name = useRef(null);
-
 
   const handleButtonClick = () => {
-    // Validate form data
-    const fullName = isSignInForm ? "" : name.current?.value || "";
-    const message = checkValidData(
-      email.current.value,
-      password.current.value,
-      fullName,
-    );
+    const message = checkValidData(email.current.value, password.current.value);
     setErrorMessage(message);
     if (message) return;
 
@@ -45,7 +36,7 @@ const Login = () => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: name.current.value,
-            photoURL: {USER_AVATAR},
+            photoURL: USER_AVATAR,
           })
             .then(() => {
               const { uid, email, displayName, photoURL } = auth.currentUser;
@@ -74,10 +65,7 @@ const Login = () => {
         email.current.value,
         password.current.value
       )
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-        })
+        .then(() => {})
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
@@ -94,40 +82,46 @@ const Login = () => {
       <Header />
       <div className="absolute">
         <img
+          className="h-screen object-cover"
           src={BG_URL}
-          alt="Background"
+          alt="logo"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = "/home-bg.svg";
+          }}
         />
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="w-full md:w-3/12 absolute p-12 bg-black my-36 mx-auto right-0 left-0 text-white rounded-lg bg-black/80"
+        className="w-full md:w-3/12 absolute p-12 bg-black my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80"
       >
-        <h1 className="text-3xl font-bold py-4">
+        <h1 className="font-bold text-3xl py-4">
           {isSignInForm ? "Sign In" : "Sign Up"}
         </h1>
+
         {!isSignInForm && (
           <input
             ref={name}
             type="text"
             placeholder="Full Name"
-            className="p-2 my-2 w-full bg-gray-900"
+            className="p-4 my-4 w-full bg-gray-700"
           />
         )}
         <input
           ref={email}
           type="text"
-          placeholder="Email"
-          className="p-2 my-2 w-full bg-gray-900"
+          placeholder="Email Address"
+          className="p-4 my-4 w-full bg-gray-700"
         />
         <input
           ref={password}
           type="password"
           placeholder="Password"
-          className="p-2 my-2 w-full bg-gray-900"
+          className="p-4 my-4 w-full bg-gray-700"
         />
         <p className="text-red-500 font-bold text-lg py-2">{errorMessage}</p>
         <button
-          className="p-2 m-2 bg-red-700 w-full rounded-lg"
+          className="p-4 my-6 bg-red-700 w-full rounded-lg"
           onClick={handleButtonClick}
         >
           {isSignInForm ? "Sign In" : "Sign Up"}
